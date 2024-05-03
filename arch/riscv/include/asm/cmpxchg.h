@@ -125,8 +125,12 @@
 	switch (size) {							\
 	case 4:								\
 		__asm__ __volatile__ (					\
+		    "   nop\n"             \
+			"   nop\n"             \
             "   lw %0, %1\n"             \
             "   sw %2, %1\n"             \
+		    "   nop\n"             \
+			"   nop\n"             \
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
 			: "memory");					\
