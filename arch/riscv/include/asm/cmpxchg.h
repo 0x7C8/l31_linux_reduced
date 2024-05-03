@@ -127,6 +127,7 @@
 		__asm__ __volatile__ (					\
             "   lw %0, %1\n"             \
             "   sw %2, %1\n"             \
+			"	fence rw, rw\n"				\
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
 			: "memory");					\
