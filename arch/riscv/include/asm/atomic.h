@@ -314,11 +314,10 @@ static __always_inline bool arch_atomic_inc_unless_negative(atomic_t *v)
 	int prev, rc;
 
 	__asm__ __volatile__ (
-		"0:	lr.w      %[p],  %[c]\n"
+		"0:	lw      %[p],  %[c]\n"
 		"	bltz      %[p],  1f\n"
 		"	addi      %[rc], %[p], 1\n"
-		"	sc.w   %[rc], %[rc], %[c]\n"
-		"	bnez      %[rc], 0b\n"
+		"	sw  	%[rc], %[c]\n"
 		"	fence     rw, rw\n"
 		"1:\n"
 		: [p]"=&r" (prev), [rc]"=&r" (rc), [c]"+A" (v->counter)
@@ -334,11 +333,10 @@ static __always_inline bool arch_atomic_dec_unless_positive(atomic_t *v)
 	int prev, rc;
 
 	__asm__ __volatile__ (
-		"0:	lr.w      %[p],  %[c]\n"
+		"0:	lw      %[p],  %[c]\n"
 		"	bgtz      %[p],  1f\n"
 		"	addi      %[rc], %[p], -1\n"
-		"	sc.w   %[rc], %[rc], %[c]\n"
-		"	bnez      %[rc], 0b\n"
+		"	sw   	 %[rc], %[c]\n"
 		"	fence     rw, rw\n"
 		"1:\n"
 		: [p]"=&r" (prev), [rc]"=&r" (rc), [c]"+A" (v->counter)
@@ -354,11 +352,10 @@ static __always_inline int arch_atomic_dec_if_positive(atomic_t *v)
        int prev, rc;
 
 	__asm__ __volatile__ (
-		"0:	lr.w     %[p],  %[c]\n"
+		"0:	lw     %[p],  %[c]\n"
 		"	addi     %[rc], %[p], -1\n"
 		"	bltz     %[rc], 1f\n"
-		"	sc.w  %[rc], %[rc], %[c]\n"
-		"	bnez     %[rc], 0b\n"
+		"	sw  	%[rc], %[c]\n"
 		"	fence    rw, rw\n"
 		"1:\n"
 		: [p]"=&r" (prev), [rc]"=&r" (rc), [c]"+A" (v->counter)
