@@ -19,7 +19,8 @@
 	switch (size) {							\
 	case 4:								\
 		__asm__ __volatile__ (					\
-			"	amoswap.w %0, %2, %1\n"			\
+            "   lw %0, %1\n"             \
+            "   sw %2, %1\n"             \
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
 			: "memory");					\
@@ -52,7 +53,8 @@
 	switch (size) {							\
 	case 4:								\
 		__asm__ __volatile__ (					\
-			"	amoswap.w %0, %2, %1\n"			\
+            "   lw %0, %1\n"             \
+            "   sw %2, %1\n"             \
 			RISCV_ACQUIRE_BARRIER				\
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
@@ -88,7 +90,8 @@
 	case 4:								\
 		__asm__ __volatile__ (					\
 			RISCV_RELEASE_BARRIER				\
-			"	amoswap.w %0, %2, %1\n"			\
+            "   lw %0, %1\n"             \
+            "   sw %2, %1\n"             \
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
 			: "memory");					\
