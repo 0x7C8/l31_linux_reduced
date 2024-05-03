@@ -129,7 +129,11 @@
 			"   nop\n"             \
 			"   nop\n"             \
 			"   nop\n"             \
+			"   nop\n"             \
+			"   nop\n"             \
             "   lw %0, %1\n"             \
+		    "   nop\n"             \
+			"   nop\n"             \
 			"   nop\n"             \
 			"   nop\n"             \
 			"   nop\n"             \
@@ -137,7 +141,9 @@
             "   sw %2, %1\n"             \
 		    "   nop\n"             \
 			"   nop\n"             \
-		    "   nop\n"             \
+			"   nop\n"             \
+			"   nop\n"             \
+			"   nop\n"             \
 			"   nop\n"             \
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
