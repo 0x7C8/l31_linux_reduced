@@ -202,11 +202,10 @@ static __always_inline int arch_atomic_fetch_add_unless(atomic_t *v, int a, int 
        int prev, rc;
 
 	__asm__ __volatile__ (
-		"0:	lr.w     %[p],  %[c]\n"
+		"0:	lw     %[p],  %[c]\n"
 		"	beq      %[p],  %[u], 1f\n"
 		"	add      %[rc], %[p], %[a]\n"
-		"	sc.w  %[rc], %[rc], %[c]\n"
-		"	bnez     %[rc], 0b\n"
+		"	sw  	%[rc], %[c]\n"
 		"	fence    rw, rw\n"
 		"1:\n"
 		: [p]"=&r" (prev), [rc]"=&r" (rc), [c]"+A" (v->counter)

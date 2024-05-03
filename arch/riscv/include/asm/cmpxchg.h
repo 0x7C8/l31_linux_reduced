@@ -125,10 +125,7 @@
 	switch (size) {							\
 	case 4:								\
 		__asm__ __volatile__ (					\
-            "   lw %0, %1\n"             \
-			"	fence rw, w\n"			\
-            "   sw %2, %1\n"             \
-			"	fence w, rw\n"			\
+			"	amoswap.w %0, %2, %1\n"		\
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
 			: "memory");					\
