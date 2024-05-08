@@ -56,7 +56,13 @@ static __always_inline							\
 void arch_atomic##prefix##_##op(c_type i, atomic##prefix##_t *v)	\
 {									\
 	__asm__ __volatile__ (						\
-		"	amo" #asm_op "." #asm_type " zero, %1, %0"	\
+		"   addi sp, sp, -4\n"             \
+        "   sw t0, 0(sp)\n"             \
+        "   lw t0, %0\n"             \
+		"   " #asm_op " t0, t0, %1\n"				\
+        "   sw t0, %0\n"             \
+        "   lw t0, 0(sp)\n"             \
+        "   addi sp, sp, 4"             \
 		: "+A" (v->counter)					\
 		: "r" (I)						\
 		: "memory");						\
@@ -92,7 +98,9 @@ c_type arch_atomic##prefix##_fetch_##op##_relaxed(c_type i,		\
 {									\
 	register c_type ret;	\
 	__asm__ __volatile__ (						\
-		"	amo" #asm_op "." #asm_type " %1, %2, %0"	\
+        "   lw %1, %0\n"             \
+		"   " #asm_op " %1, %1, %2\n"	\
+        "   sw %1, %0"             \
 		: "+A" (v->counter), "=r" (ret)				\
 		: "r" (I)						\
 		: "memory");						\
@@ -103,7 +111,9 @@ c_type arch_atomic##prefix##_fetch_##op(c_type i, atomic##prefix##_t *v)	\
 {									\
 	register c_type ret;						\
 	__asm__ __volatile__ (						\
-		"	amo" #asm_op "." #asm_type " %1, %2, %0"	\
+        "   lw %1, %0\n"             \
+		"   " #asm_op " %1, %1, %2\n"	\
+        "   sw %1, %0"             \
 		: "+A" (v->counter), "=r" (ret)				\
 		: "r" (I)						\
 		: "memory");						\
