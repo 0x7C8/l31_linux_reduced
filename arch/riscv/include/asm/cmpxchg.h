@@ -125,8 +125,13 @@
 	switch (size) {							\
 	case 4:								\
 		__asm__ __volatile__ (					\
-			"   lw %0, %1\n"             \
+		    "   addi sp, sp, -4\n"             \
+            "   sw t0, 0(sp)\n"             \
+            "   lw t0, %1\n"             \
             "   sw %2, %1\n"             \
+            "   mv %0, t0\n"             \			
+            "   lw t0, 0(sp)\n"             \
+            "   addi sp, sp, 4\n"             \
 			: "=r" (__ret), "+A" (*__ptr)			\
 			: "r" (__new)					\
 			: "memory");					\
