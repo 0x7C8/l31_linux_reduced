@@ -101,7 +101,7 @@ c_type arch_atomic##prefix##_fetch_##op##_relaxed(c_type i,		\
         "   lw %1, %0\n"             \
 		"   addi sp, sp, -4\n"             \
         "   sw %1, 0(sp)\n"             \
-		"   " #asm_op " %1, %1, %2\n"	\
+		"   " #asm_op " %1, %2, %1\n"	\
         "   sw %1, %0\n"             \
         "   lw %1, 0(sp)\n"             \
         "   addi sp, sp, 4"             \
@@ -118,7 +118,7 @@ c_type arch_atomic##prefix##_fetch_##op(c_type i, atomic##prefix##_t *v)	\
         "   lw %1, %0\n"             \
 		"   addi sp, sp, -4\n"             \
         "   sw %1, 0(sp)\n"             \
-		"   " #asm_op " %1, %1, %2\n"	\
+		"   " #asm_op " %1, %2, %1\n"	\
         "   sw %1, %0\n"             \
         "   lw %1, 0(sp)\n"             \
         "   addi sp, sp, 4"             \
