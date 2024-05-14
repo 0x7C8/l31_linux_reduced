@@ -109,12 +109,12 @@ c_type arch_atomic##prefix##_fetch_##op(c_type i, atomic##prefix##_t *v)	\
 {									\
 	register c_type ret;						\
 	__asm__ __volatile__ (						\
-        "   lw %1, %0\n"             \
 		"   addi sp, sp, -4\n"             \
-        "   sw %1, 0(sp)\n"             \
-		"   " #asm_op " %1, %1, %2\n"	\
-        "   sw %1, %0\n"             \
-        "   lw %1, 0(sp)\n"             \
+        "   sw t0, 0(sp)\n"             \
+        "   lw t0, %0\n"             \
+		"   " #asm_op " t0, t0, %1\n"				\
+        "   sw t0, %0\n"             \
+        "   lw t0, 0(sp)\n"             \
         "   addi sp, sp, 4"             \
 		: "+A" (v->counter), "=r" (ret)				\
 		: "r" (I)						\
