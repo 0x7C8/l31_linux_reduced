@@ -96,6 +96,7 @@ static __always_inline							\
 c_type arch_atomic##prefix##_fetch_##op##_relaxed(c_type i,		\
 					     atomic##prefix##_t *v)	\
 {									\
+	register c_type ret;	\
 	__asm__ __volatile__ (						\
         "   lw %1, %0\n"             \
 		"   addi sp, sp, -4\n"             \
