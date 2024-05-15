@@ -98,7 +98,9 @@ c_type arch_atomic##prefix##_fetch_##op##_relaxed(c_type i,		\
 {									\
 	register c_type ret;	\
 	__asm__ __volatile__ (						\
-		"	amo" #asm_op "." #asm_type " %1, %2, %0"	\
+        "   lw %1, %0\n"             \
+		"   " #asm_op " %1, %1, %2\n"				\
+        "   sw %1, %0"             \
 		: "+A" (v->counter), "=r" (ret)				\
 		: "r" (I)						\
 		: "memory");						\
